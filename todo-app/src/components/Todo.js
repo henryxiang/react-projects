@@ -1,44 +1,29 @@
-import React, { Component } from 'react';
-
-/**
- * props: {
- *  name: string
- *  completed: boolean
- *  onDelete: function(name)
- * }
- */
-class Todo extends Component {
-  // state = {
-  //   completed: false
-  // }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      completed: props.todo.completed
-    }
+import React, { Component } from 'react'
+import { observer } from 'mobx-react'
+class Todo extends Component {  
+  onToggle = () => {
+    const { id, appContext } = this.props
+    appContext.toggleTodoStatus(id)
   }
 
   onDelete = () => {
-    const { todo, onDelete } = this.props;
-    console.log('delete todo', todo.name, onDelete);
-    onDelete(todo.name);
+    const { id, appContext } = this.props
+    appContext.deleteTodo(id)
   }
 
   render() {
-    const { name } = this.props.todo;
-    const { completed } = this.state;
+    const { name, completed } = this.props
     const status = completed ? "completed" : ""
     return (
       <li className={status}>
         <div className="view">
-          <input className="toggle" type="checkbox" id="1" defaultChecked={completed} onClick={() => this.setState({ completed: !completed })}/>
+          <input className="toggle" type="checkbox" defaultChecked={completed} onClick={this.onToggle}/>
           <label>{name}</label>
-          <button className="destroy" id="1" onClick={this.onDelete}></button>
+          <button className="destroy" onClick={this.onDelete}></button>
         </div>
       </li>
-    );
+    )
   }
 }
 
-export default Todo;
+export default observer(Todo);

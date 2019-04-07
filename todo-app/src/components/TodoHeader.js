@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
+import { observer } from 'mobx-react'
 
-export default class TodoHeader extends Component {
+class TodoHeader extends Component {
   state = {
     input: ''
   }
 
   onSubmit = (event) => {
+    const { appContext } = this.props
     event.preventDefault();
-    this.props.onSubmit(this.state.input)
+    appContext.createNewTodo(this.state.input)
     this.setState({ input: '' });
   }
 
@@ -23,11 +25,14 @@ export default class TodoHeader extends Component {
         <form onSubmit={this.onSubmit}>
           <input 
             onChange={this.onInputChange}
+            value={this.state.input}
             className="new-todo" 
             placeholder="What needs to be done?" 
-            autofocus />
+            autoFocus />
         </form>
 			</header>
     )
   }
 }
+
+export default observer(TodoHeader)

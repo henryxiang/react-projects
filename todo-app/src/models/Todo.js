@@ -1,10 +1,14 @@
+import { observable } from 'mobx'
 class Todo {
-  // name =  '';
-  // completed = false;
-  constructor(name = '', completed = false) {
-    this.name = name;
-    this.completed = completed;
+  id = null
+  name = observable.box('')
+  completed = observable.box(false)
+
+  constructor(name, completed = false) {
+    this.id = Math.floor(Math.random()*10000)
+    this.name = name
+    this.completed = completed
   }
 }
 
-export default Todo;
+export default Todo
